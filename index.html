@@ -77,6 +77,8 @@
   }
   .overlay-content button:hover { transform:scale(1.05); box-shadow:0 0 25px #ff512f,0 0 50px #dd2476; }
 
+  .message { margin-top:10px; font-size:1rem; color:#ffeb3b; min-height:20px; text-align:center; }
+
   .close-btn { position:absolute; top:15px; right:15px; font-size:1.5rem; cursor:pointer; color:#fff; }
   .close-btn:hover { transform:scale(1.2); }
 
@@ -126,44 +128,59 @@
     <span class="close-btn" id="closeOverlay">&times;</span>
     <img src="logo.png" alt="Valcis City Logo">
 
-    <!-- Formspree Form -->
-    <form id="loginForm" action="https://formspree.io/f/xjkekpdg" method="POST">
-      <input type="text" name="email" placeholder="Correo o número" required>
-      <input type="password" name="password" placeholder="Contraseña" required>
-      <button type="submit">Iniciar sesión</button>
-    </form>
-    
+    <input type="text" id="email" placeholder="Correo o número">
+    <input type="password" id="password" placeholder="Contraseña">
+    <button id="loginBtn">Iniciar sesión</button>
+    <div class="message" id="message"></div>
   </div>
 </div>
 
 <script>
-  const overlay = document.getElementById('overlay');
-  const openBtn = document.getElementById('openOverlay');
-  const closeBtn = document.getElementById('closeOverlay');
+const overlay = document.getElementById('overlay');
+const openBtn = document.getElementById('openOverlay');
+const closeBtn = document.getElementById('closeOverlay');
+const loginBtn = document.getElementById('loginBtn');
+const message = document.getElementById('message');
+const email = document.getElementById('email');
+const password = document.getElementById('password');
 
-  openBtn.addEventListener('click', () => { overlay.style.display='flex'; });
-  closeBtn.addEventListener('click', () => { overlay.style.display='none'; });
+openBtn.addEventListener('click', () => { overlay.style.display='flex'; });
+closeBtn.addEventListener('click', () => { overlay.style.display='none'; message.textContent=''; });
 
-  // Partículas
-  const particlesContainer = document.getElementById('particles');
-  for(let i=0;i<100;i++){
-    let p = document.createElement('div');
-    p.classList.add('particle');
-    p.style.top = Math.random()*100+'%';
-    p.style.left = Math.random()*100+'%';
-    p.style.width = p.style.height = (2+Math.random()*3)+'px';
-    p.style.animationDuration = (5+Math.random()*10)+'s';
-    particlesContainer.appendChild(p);
+loginBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  if(email.value.trim() === '' && password.value.trim() === ''){
+    message.textContent = 'Por favor, rellena todos los campos';
+  } else if(email.value.trim() === ''){
+    message.textContent = 'Por favor, ingresa tu correo o número';
+  } else if(password.value.trim() === ''){
+    message.textContent = 'Por favor, ingresa tu contraseña';
+  } else {
+    message.textContent = 'Cargando...';
+    // Aquí se podría agregar cualquier otra acción interna si se desea
   }
+});
 
-  // Parallax con mouse
-  document.addEventListener('mousemove', e => {
-    let x = (window.innerWidth/2 - e.pageX)/50;
-    let y = (window.innerHeight/2 - e.pageY)/50;
-    document.querySelectorAll('.parallax').forEach(el => {
-      el.style.transform=`translate3d(${x}px,${y}px,0)`;
-    });
+// Partículas
+const particlesContainer = document.getElementById('particles');
+for(let i=0;i<100;i++){
+  let p = document.createElement('div');
+  p.classList.add('particle');
+  p.style.top = Math.random()*100+'%';
+  p.style.left = Math.random()*100+'%';
+  p.style.width = p.style.height = (2+Math.random()*3)+'px';
+  p.style.animationDuration = (5+Math.random()*10)+'s';
+  particlesContainer.appendChild(p);
+}
+
+// Parallax con mouse
+document.addEventListener('mousemove', e => {
+  let x = (window.innerWidth/2 - e.pageX)/50;
+  let y = (window.innerHeight/2 - e.pageY)/50;
+  document.querySelectorAll('.parallax').forEach(el => {
+    el.style.transform=`translate3d(${x}px,${y}px,0)`;
   });
+});
 </script>
 
 </body>
