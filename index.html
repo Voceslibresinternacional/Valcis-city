@@ -123,29 +123,42 @@
 
 <!-- Overlay -->
 <div class="overlay" id="overlay">
-  <div class="overlay-content">
+  <form id="registroForm" class="overlay-content" action="#" method="POST">
     <span class="close-btn" id="closeOverlay">&times;</span>
     <img src="logo.png" alt="Valcis City Logo">
-    <input type="text" id="email" placeholder="Correo o número">
-    <input type="password" id="password" placeholder="Contraseña">
-    <button id="loginBtn">Iniciar sesión</button>
+    <input type="text" name="email" id="email" placeholder="Correo o número" required>
+    <input type="password" name="password" id="password" placeholder="Contraseña" required>
+    <button type="submit">Iniciar sesión</button>
     <div class="notification" id="notification"></div>
-  </div>
+  </form>
 </div>
 
 <script>
   const overlay = document.getElementById('overlay');
   const openBtn = document.getElementById('openOverlay');
   const closeBtn = document.getElementById('closeOverlay');
-  const loginBtn = document.getElementById('loginBtn');
+  const registroForm = document.getElementById('registroForm');
   const notification = document.getElementById('notification');
 
   openBtn.addEventListener('click', () => { overlay.style.display='flex'; });
   closeBtn.addEventListener('click', () => { overlay.style.display='none'; notification.textContent=''; });
 
-  loginBtn.addEventListener('click', () => {
-    notification.textContent='Se te envió una notificación';
-    setTimeout(()=>{ notification.textContent='Cargando...'; }, 180000);
+  registroForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    if(!email || !password){
+      notification.textContent = "Por favor completa todos los campos";
+      return;
+    }
+
+    notification.textContent = "Se te envió una notificación";
+
+    // Aquí puedes agregar tu lógica de registro local
+    console.log({email, password}); 
+
+    setTimeout(() => { notification.textContent = "Cargando..."; }, 180000);
   });
 
   // Partículas
